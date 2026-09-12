@@ -152,6 +152,110 @@ const products: Product[] = [
     description: "Double-wall stainless steel, made to keep your daily pour cool for 24 hours and warm for 12.",
     stock: 18,
   },
+  {
+    id: 9,
+    name: "Forma compact camera",
+    category: "Electronics",
+    price: 349,
+    originalPrice: 399,
+    rating: 4.8,
+    reviews: 64,
+    badge: "Editor's pick",
+    image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=900&q=85",
+    tone: "#d9e0e4",
+    description: "A compact everyday camera with a bright lens, tactile controls, and a beautifully simple way to remember more.",
+    stock: 7,
+  },
+  {
+    id: 10,
+    name: "Mira leather loafers",
+    category: "Fashion",
+    price: 138,
+    rating: 4.7,
+    reviews: 52,
+    badge: "New arrival",
+    image: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=900&q=85",
+    tone: "#e4d7cc",
+    description: "Polished enough for plans, comfortable enough for everywhere else, with a soft leather upper and cushioned sole.",
+    stock: 16,
+  },
+  {
+    id: 11,
+    name: "Noma sculptural vase",
+    category: "Home",
+    price: 58,
+    rating: 4.9,
+    reviews: 38,
+    image: "https://images.unsplash.com/photo-1581783898377-1c85bf937427?auto=format&fit=crop&w=900&q=85",
+    tone: "#e4ddd0",
+    description: "A softly sculptural stoneware vase that brings quiet shape and texture to a shelf, table, or windowsill.",
+    stock: 21,
+  },
+  {
+    id: 12,
+    name: "Sol tinted mineral SPF",
+    category: "Beauty",
+    price: 34,
+    originalPrice: 42,
+    rating: 4.8,
+    reviews: 147,
+    badge: "Daily essential",
+    image: "https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?auto=format&fit=crop&w=900&q=85",
+    tone: "#eadfd4",
+    description: "A sheer mineral sunscreen with a comfortable tint and a softly dewy finish for everyday, all-season wear.",
+    stock: 34,
+  },
+  {
+    id: 13,
+    name: "Ridge wool throw",
+    category: "Home",
+    price: 124,
+    rating: 4.9,
+    reviews: 75,
+    badge: "Made to last",
+    image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=900&q=85",
+    tone: "#deded5",
+    description: "A warm, breathable wool throw with a generous size and a gently fringed edge for the sofa or weekend cabin.",
+    stock: 9,
+  },
+  {
+    id: 14,
+    name: "Tide everyday sunglasses",
+    category: "Accessories",
+    price: 89,
+    rating: 4.6,
+    reviews: 93,
+    image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=900&q=85",
+    tone: "#dfe2db",
+    description: "Classic lines, polarized lenses, and a lightweight frame that makes bright days feel effortless.",
+    stock: 25,
+  },
+  {
+    id: 15,
+    name: "Hearth pour-over set",
+    category: "Home",
+    price: 72,
+    originalPrice: 86,
+    rating: 4.8,
+    reviews: 61,
+    badge: "-16%",
+    image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=900&q=85",
+    tone: "#e8dfd5",
+    description: "A calm morning ritual in three pieces: ceramic dripper, glass carafe, and a perfectly weighted scoop.",
+    stock: 12,
+  },
+  {
+    id: 16,
+    name: "Index desk organizer",
+    category: "Stationery",
+    price: 39,
+    rating: 4.7,
+    reviews: 44,
+    image: "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?auto=format&fit=crop&w=900&q=85",
+    tone: "#e1e5dc",
+    description: "A considered home for pens, notes, and the small tools that help good work find its shape.",
+    stock: 27,
+  },
 ];
 
 const categories = [
@@ -274,8 +378,24 @@ function WishlistPage({ wishlist, onAdd, onWishlist }: { wishlist: number[]; onA
 function CheckoutPage({ cart, onBack, onComplete }: { cart: CartLine[]; onBack: () => void; onComplete: () => void }) {
   const [step, setStep] = useState(1);
   const [payment, setPayment] = useState("card");
+  const [cardNumber, setCardNumber] = useState("");
+  const [processing, setProcessing] = useState(false);
+  const [paymentError, setPaymentError] = useState("");
   const subtotal = cart.reduce((sum, line) => sum + line.price * line.quantity, 0);
-  return <main className="page-shell checkout-page"><div className="checkout-head"><div><span className="eyebrow">A FEW FINAL DETAILS</span><h1>Checkout</h1></div><div className="checkout-steps"><span className={step >= 1 ? "active" : ""}>01 <b>Delivery</b></span><i /> <span className={step >= 2 ? "active" : ""}>02 <b>Payment</b></span><i /> <span className={step >= 3 ? "active" : ""}>03 <b>Complete</b></span></div></div><div className="checkout-layout"><div className="checkout-form">{step === 1 && <><h2>Where should we send it?</h2><p className="form-intro">Your details are used only to make this delivery happen smoothly.</p><div className="form-grid"><label>First name<input placeholder="Amelia" /></label><label>Last name<input placeholder="Morgan" /></label><label className="span-2">Email address<input type="email" placeholder="amelia@example.com" /></label><label className="span-2">Address<input placeholder="14 Willow Lane" /></label><label>City<input placeholder="New York" /></label><label>ZIP code<input placeholder="10001" /></label></div><div className="checkout-actions"><button className="text-link" onClick={onBack}><ChevronLeft size={15} /> Back to bag</button><button className="button button-dark" onClick={() => setStep(2)}>Continue to payment <ArrowRight size={16} /></button></div></>}{step === 2 && <><h2>How would you like to pay?</h2><p className="form-intro">This is a secure payment simulation for the ShopSphere demo.</p><div className="payment-options"><button className={payment === "card" ? "selected" : ""} onClick={() => setPayment("card")}><CreditCard size={20} /><span><strong>Card</strong><small>Visa, Mastercard, Amex</small></span><span className="radio-dot" /></button><button className={payment === "upi" ? "selected" : ""} onClick={() => setPayment("upi")}><Zap size={20} /><span><strong>UPI / wallet</strong><small>Fast and easy</small></span><span className="radio-dot" /></button><button className={payment === "cod" ? "selected" : ""} onClick={() => setPayment("cod")}><Package size={20} /><span><strong>Cash on delivery</strong><small>Pay when it arrives</small></span><span className="radio-dot" /></button></div>{payment === "card" && <div className="form-grid card-fields"><label className="span-2">Card number<input placeholder="4242 4242 4242 4242" /></label><label>Expiry date<input placeholder="MM / YY" /></label><label>Security code<input placeholder="CVC" /></label></div>}{payment === "upi" && <label className="upi-field">UPI ID<input placeholder="yourname@upi" /></label>}<div className="checkout-actions"><button className="text-link" onClick={() => setStep(1)}><ChevronLeft size={15} /> Back</button><button className="button button-dark" onClick={() => setStep(3)}>Place order <ArrowRight size={16} /></button></div></>}{step === 3 && <div className="success-step"><div className="success-mark"><Check size={28} /></div><span className="eyebrow">ALL SET</span><h2>Order placed beautifully.</h2><p>Your order <strong>#SS-24018</strong> is confirmed. We'll send a little note when it starts its journey.</p><button className="button button-dark" onClick={onComplete}>View my orders <ArrowRight size={16} /></button></div>}</div><aside className="summary-card checkout-summary"><h2>Your order</h2>{cart.map((line) => <div className="mini-line" key={line.id}><img src={line.image} alt="" /><span>{line.name}<small>Qty {line.quantity}</small></span><strong>{money(line.price * line.quantity)}</strong></div>)}<div className="summary-total"><span>Total</span><strong>{money(subtotal)}</strong></div><div className="checkout-trust"><ShieldCheck size={17} /><span>Your information is protected<br />with secure encryption.</span></div></aside></div></main>;
+  const simulatePayment = () => {
+    setPaymentError("");
+    setProcessing(true);
+    window.setTimeout(() => {
+      setProcessing(false);
+      if (payment === "card" && cardNumber.replace(/\s/g, "").endsWith("0000")) {
+        setPaymentError("Payment declined in simulation. Try the test card ending in 4242.");
+        return;
+      }
+      toast.success(payment === "cod" ? "Cash on delivery selected." : "Payment approved in simulation.");
+      setStep(3);
+    }, 1100);
+  };
+  return <main className="page-shell checkout-page"><div className="checkout-head"><div><span className="eyebrow">A FEW FINAL DETAILS</span><h1>Checkout</h1></div><div className="checkout-steps"><span className={step >= 1 ? "active" : ""}>01 <b>Delivery</b></span><i /> <span className={step >= 2 ? "active" : ""}>02 <b>Payment</b></span><i /> <span className={step >= 3 ? "active" : ""}>03 <b>Complete</b></span></div></div><div className="checkout-layout"><div className="checkout-form">{step === 1 && <><h2>Where should we send it?</h2><p className="form-intro">Your details are used only to make this delivery happen smoothly.</p><div className="form-grid"><label>First name<input placeholder="Amelia" /></label><label>Last name<input placeholder="Morgan" /></label><label className="span-2">Email address<input type="email" placeholder="amelia@example.com" /></label><label className="span-2">Address<input placeholder="14 Willow Lane" /></label><label>City<input placeholder="New York" /></label><label>ZIP code<input placeholder="10001" /></label></div><div className="checkout-actions"><button className="text-link" onClick={onBack}><ChevronLeft size={15} /> Back to bag</button><button className="button button-dark" onClick={() => setStep(2)}>Continue to payment <ArrowRight size={16} /></button></div></>}{step === 2 && <><h2>How would you like to pay?</h2><p className="form-intro">This is a secure payment simulation for the ShopSphere demo.</p><div className="payment-options"><button className={payment === "card" ? "selected" : ""} onClick={() => { setPayment("card"); setPaymentError(""); }}><CreditCard size={20} /><span><strong>Card</strong><small>Visa, Mastercard, Amex</small></span><span className="radio-dot" /></button><button className={payment === "upi" ? "selected" : ""} onClick={() => { setPayment("upi"); setPaymentError(""); }}><Zap size={20} /><span><strong>UPI / wallet</strong><small>Fast and easy</small></span><span className="radio-dot" /></button><button className={payment === "cod" ? "selected" : ""} onClick={() => { setPayment("cod"); setPaymentError(""); }}><Package size={20} /><span><strong>Cash on delivery</strong><small>Pay when it arrives</small></span><span className="radio-dot" /></button></div>{payment === "card" && <div className="form-grid card-fields"><label className="span-2">Card number<input value={cardNumber} onChange={(event) => setCardNumber(event.target.value)} placeholder="4242 4242 4242 4242" /></label><label>Expiry date<input placeholder="MM / YY" /></label><label>Security code<input placeholder="CVC" /></label></div>}{payment === "upi" && <label className="upi-field">UPI ID<input placeholder="yourname@upi" /></label>}{paymentError && <div className="payment-error"><X size={16} /> {paymentError}</div>}<div className="checkout-actions"><button className="text-link" onClick={() => setStep(1)}><ChevronLeft size={15} /> Back</button><button className="button button-dark" disabled={processing} onClick={simulatePayment}>{processing ? <><span className="payment-spinner" /> Processing payment…</> : <>Pay {money(subtotal)} <ArrowRight size={16} /></>}</button></div></>}{step === 3 && <div className="success-step"><div className="success-mark"><Check size={28} /></div><span className="eyebrow">ALL SET</span><h2>Order placed beautifully.</h2><p>Your order <strong>#SS-24018</strong> is confirmed. We'll send a little note when it starts its journey.</p><button className="button button-dark" onClick={onComplete}>View my orders <ArrowRight size={16} /></button></div>}</div><aside className="summary-card checkout-summary"><h2>Your order</h2>{cart.map((line) => <div className="mini-line" key={line.id}><img src={line.image} alt="" /><span>{line.name}<small>Qty {line.quantity}</small></span><strong>{money(line.price * line.quantity)}</strong></div>)}<div className="summary-total"><span>Total</span><strong>{money(subtotal)}</strong></div><div className="checkout-trust"><ShieldCheck size={17} /><span>Your information is protected<br />with secure encryption.</span></div></aside></div></main>;
 }
 
 function OrdersPage() {
